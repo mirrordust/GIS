@@ -45,5 +45,10 @@ namespace GIS
             m_toolbar.SetBuddyControl(m_map);
             m_toolbar.AddItem("esriControls.ControlsMapNavigationToolbar");
         }
+
+        private void btnLabel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

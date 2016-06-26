@@ -10,7 +10,7 @@
         <WindowsFormsHost x:Name="toolbarHost" HorizontalAlignment="Left" Height="50" Margin="10,10,0,0" VerticalAlignment="Top" Width="651"/>
         <WindowsFormsHost x:Name="tocHost" HorizontalAlignment="Left" Height="494" Margin="10,64,0,0" VerticalAlignment="Top" Width="182"/>
         <WindowsFormsHost x:Name="mapControlHost" HorizontalAlignment="Left" Height="494" Margin="197,64,0,0" VerticalAlignment="Top" Width="785"/>
-        <Button x:Name="labelButton" Content="Label" HorizontalAlignment="Left" Margin="680,0,0,517" Width="82" Height="34" VerticalAlignment="Bottom"/>
+        <Button x:Name="btnLabel" Content="Label" HorizontalAlignment="Left" Margin="680,0,0,517" Width="82" Height="34" VerticalAlignment="Bottom" Click="btnLabel_Click"/>
 
     </Grid>
 </Window>
