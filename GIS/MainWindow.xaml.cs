@@ -102,7 +102,7 @@ namespace GIS
             this.districtList.Items.Add("浦东新区");
             this.districtList.Items.Add("金山区");
             this.districtList.Items.Add("崇明县");
-            this.districtList.SelectedIndex = 0;
+           // this.districtList.SelectedIndex = 0;
 
             m_map.Map = mapDoc.get_Map(0);
             m_toc.SetBuddyControl(m_map);
