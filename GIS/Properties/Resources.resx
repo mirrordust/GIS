@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ArcMapPath" xml:space="preserve">
-    <value>E:\Git_Repositories\GIS\projectMXD\project.mxd</value>
+    <value>D:\常用文件\GIS\projectMXD\project.mxd</value>
     <comment>ArcMap绝对路径</comment>
   </data>
   <data name="ArcMapRelativePath" xml:space="preserve">
