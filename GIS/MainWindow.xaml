@@ -3,14 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:GIS"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000" Loaded="Window_Loaded">
     <Grid>
-        <WindowsFormsHost x:Name="toolbarHost" HorizontalAlignment="Left" Height="50" Margin="10,10,0,0" VerticalAlignment="Top" Width="651"/>
+        <WindowsFormsHost x:Name="toolbarHost" HorizontalAlignment="Left" Height="50" Margin="10,10,0,0" VerticalAlignment="Top" Width="373"/>
         <WindowsFormsHost x:Name="tocHost" HorizontalAlignment="Left" Height="494" Margin="10,64,0,0" VerticalAlignment="Top" Width="182"/>
-        <WindowsFormsHost x:Name="mapControlHost" HorizontalAlignment="Left" Height="494" Margin="197,64,0,0" VerticalAlignment="Top" Width="785"/>
-        <Button x:Name="btnLabel" Content="Label" HorizontalAlignment="Left" Margin="680,0,0,517" Width="82" Height="34" VerticalAlignment="Bottom" Click="btnLabel_Click"/>
+        <WindowsFormsHost x:Name="mapControlHost" HorizontalAlignment="Left" Height="494" Margin="197,64,0,0" VerticalAlignment="Top" Width="526"/>
+        <GroupBox x:Name="groupBox" Header="Feature Layer" HorizontalAlignment="Left" Margin="728,10,0,0" VerticalAlignment="Top" Height="260" Width="254">
+            <Grid HorizontalAlignment="Left" Height="240" Margin="10,10,-2,-12" VerticalAlignment="Top" Width="234">
+                <Label x:Name="labelActiveMap" Content="Active Map" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                <ComboBox x:Name="cbxActiveMap" HorizontalAlignment="Left" Margin="104,14,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxActiveMap_SelectionChanged"/>
+                <Label x:Name="labelFLayer" Content="Feature Layers" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top"/>
+                <ComboBox x:Name="cbxFeatureLayer" HorizontalAlignment="Left" Margin="104,59,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxFeatureLayer_SelectionChanged"/>
+                <Label x:Name="labelField" Content="Fields" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top"/>
+                <ComboBox x:Name="cbxField" HorizontalAlignment="Left" Margin="104,116,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxField_SelectionChanged"/>
+                <Button x:Name="btnLabel" Content="Label" HorizontalAlignment="Left" Margin="142,0,0,32" Width="82" Height="34" VerticalAlignment="Bottom" Click="btnLabel_Click"/>
+                <xctk:ColorPicker x:Name="labelClrPicker" Margin="10,174,125,46" RenderTransformOrigin="0.459,-0.335" DisplayColorAndName="True" SelectedColorChanged="labelClrPicker_SelectedColorChanged"/>
+            </Grid>
+        </GroupBox>
 
     </Grid>
 </Window>
