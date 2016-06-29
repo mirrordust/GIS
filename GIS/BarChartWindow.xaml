@@ -1,4 +1,4 @@
-﻿<Window x:Class="GIS.ChartWindow"
+﻿<Window x:Class="GIS.BarChartWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,7 +7,7 @@
         xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:local="clr-namespace:GIS"
         mc:Ignorable="d"
-        Title="Chart" Height="291" Width="469">
+        Title="BarChart" Height="343.365" Width="957.009">
     <Grid>
         <!--<Grid.RowDefinitions>
             <RowDefinition Name="mainArea" Height="Auto"/>
@@ -16,9 +16,7 @@
            Width="Auto" Height="Auto" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
            Background="LightSteelBlue" Margin="0,0,0,0">
             <DVC:Chart.Series>
-                <DVC:ColumnSeries Title="Shanghai POI"
-            IndependentValueBinding="{Binding Path=Key}"
-            DependentValueBinding="{Binding Path=Value}">
+                <DVC:ColumnSeries Title="Shanghai POI" IndependentValueBinding="{Binding Path=Key}" DependentValueBinding="{Binding Path=Value}">
                     <DVC:ColumnSeries.DataPointStyle>
                         <Style TargetType="DVC:ColumnDataPoint">
                             <Setter Property="Template">

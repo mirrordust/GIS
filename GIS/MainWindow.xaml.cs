@@ -1,28 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Win32;
 
 using ESRI.ArcGIS.Controls;
 using ESRI.ArcGIS.Carto;
-using ESRI.ArcGIS.Geometry;
 using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.Display;
 
 using stdole;
-using System.Windows.Controls.Primitives;
 
 namespace GIS
 {
@@ -378,6 +368,8 @@ namespace GIS
             cbxField.Items.Clear();
             chkBoxLabel.IsChecked = false;
             labelClrPicker.SelectedColor = null;
+            rbtnBarCht.IsChecked = false;
+            rbtnPieCht.IsChecked = false;
             m_map.ClearLayers();
             m_toc.Update();
             m_toolbar.Update();
@@ -581,7 +573,25 @@ namespace GIS
 
         private void Chart_Click(object sender, RoutedEventArgs e)
         {
-            new ChartWindow().Show();
+            try
+            {
+                if (rbtnBarCht.IsChecked == true)
+                {
+                    BarChartWindow bcw = new BarChartWindow();
+                    bcw.InitializeChart(getDistrictPOI());
+                    bcw.Show();
+                }
+                else if (rbtnPieCht.IsChecked == true)
+                {
+                    PieChartWindow pcw = new PieChartWindow();
+                    pcw.InitializeChart(getDistrictPOI());
+                    pcw.Show();
+                }
+            }
+            catch (System.Runtime.InteropServices.COMException ex)
+            {
+                //Console.WriteLine(ex.Message);
+            }
         }
     }
 }
