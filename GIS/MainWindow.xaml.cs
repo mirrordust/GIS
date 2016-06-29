@@ -103,7 +103,7 @@ namespace GIS
             this.districtList.Items.Add("浦东新区");
             this.districtList.Items.Add("金山区");
             this.districtList.Items.Add("崇明县");
-           // this.districtList.SelectedIndex = 0;
+            // this.districtList.SelectedIndex = 0;
 
             m_map.Map = mapDoc.get_Map(0);
             m_toc.SetBuddyControl(m_map);
@@ -311,8 +311,8 @@ namespace GIS
 
         private void districtSelect(object sender, SelectionChangedEventArgs e)
         {
-            Console.Out.WriteLine(sender.ToString());
-            Console.Out.WriteLine(this.districtList.Items.GetItemAt(this.districtList.SelectedIndex));
+            //Console.Out.WriteLine(sender.ToString());
+            //Console.Out.WriteLine(this.districtList.Items.GetItemAt(this.districtList.SelectedIndex));
             String districName = this.districtList.Items.GetItemAt(this.districtList.SelectedIndex).ToString();
             setDistrictColor(districName);
         }
@@ -322,7 +322,7 @@ namespace GIS
             IFeatureLayer pFeatureLayer = m_map.Map.get_Layer(4) as IFeatureLayer;
             IQueryFilter pFilter;
             pFilter = new QueryFilterClass();
-            pFilter.WhereClause = "Name = '"+districtName+"'";
+            pFilter.WhereClause = "Name = '" + districtName + "'";
             IFeatureSelection pFeatureSelection;
             pFeatureSelection = pFeatureLayer as IFeatureSelection;
             pFeatureSelection.SelectFeatures(pFilter, esriSelectionResultEnum.esriSelectionResultNew, true);

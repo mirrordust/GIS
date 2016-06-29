@@ -117,12 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ArcMapPath" xml:space="preserve">
-    <value>C:\Users\Dian\Desktop\projectMXD\project.mxd</value>
-    <comment>ArcMap绝对路径</comment>
-  </data>
-  <data name="ArcMapRelativePath" xml:space="preserve">
-    <value>..\..\..\projectMXD\project.mxd</value>
-    <comment>ArcMap相对路径</comment>
-  </data>
 </root>
