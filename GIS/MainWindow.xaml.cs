@@ -569,10 +569,12 @@ namespace GIS
             }
 
             List<KeyValuePair<string, long>> list = new List<KeyValuePair<string, long>>();
-            for (int i = 0; i < districtCode.Count; i++)
+            foreach (string _code in districtPOICount.Keys)
             {
-                string _code = districtCode.Values[i].ToString();
-                list.Add(new KeyValuePair<string, long>(distriction[_code], districtPOICount[_code]));
+                if (distriction.ContainsKey(_code))
+                {
+                    list.Add(new KeyValuePair<string, long>(distriction[_code], districtPOICount[_code]));
+                }
             }
             return list;
         }
