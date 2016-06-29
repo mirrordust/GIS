@@ -131,6 +131,8 @@ namespace GIS
             listCode.Add("310116");
             this.districtList.Items.Add("崇明县");
             listCode.Add("310230");
+            this.districtList.Items.Add("--清除选择--");
+            listCode.Add("310000");
         }
 
         private void ShowLabel()
@@ -366,6 +368,7 @@ namespace GIS
             cbxActiveMap.Items.Clear();
             cbxFeatureLayer.Items.Clear();
             cbxField.Items.Clear();
+            districtList.Items.Clear();
             chkBoxLabel.IsChecked = false;
             labelClrPicker.SelectedColor = null;
             rbtnBarCht.IsChecked = false;
@@ -380,6 +383,8 @@ namespace GIS
         {
             //Console.Out.WriteLine(sender.ToString());
             //Console.Out.WriteLine(this.districtList.Items.GetItemAt(this.districtList.SelectedIndex));
+            if (this.districtList.SelectedIndex < 0)
+                return;
             String districName = this.districtList.Items.GetItemAt(this.districtList.SelectedIndex).ToString();
             setDistrictColor(districName);
             Console.Out.WriteLine(listCode[this.districtList.SelectedIndex]);
