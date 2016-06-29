@@ -63,7 +63,7 @@ namespace GIS
 
         public MainWindow()
         {
-             InitializeComponent();
+            InitializeComponent();
             this.mapControlHost.Child = m_map;
             this.tocHost.Child = m_toc;
             this.toolbarHost.Child = m_toolbar;
@@ -88,7 +88,7 @@ namespace GIS
             //添加行政区划分
             this.districtList.Items.Clear();
             initData();
-           
+
             // this.districtList.SelectedIndex = 0;
 
             m_map.Map = mapDoc.get_Map(0);
@@ -142,7 +142,7 @@ namespace GIS
             this.districtList.Items.Add("崇明县");
             listCode.Add("310230");
         }
-       
+
         private void ShowLabel()
         {
             if (labelOn)
@@ -300,6 +300,31 @@ namespace GIS
             return fData;
         }
 
+        private FieldData getData(ILayer layer, string fieldName)
+        {
+            if (layer == null || fieldName == null)
+                return null;
+
+            IFeatureLayer fLayer = layer as IFeatureLayer;
+            IFeatureClass fClass = fLayer.FeatureClass;
+            IFields fields = fClass.Fields;
+
+            ITable table = fClass as ITable;
+            ICursor cursor = table.Search(null, false);
+            IRow row = cursor.NextRow();
+
+            FieldData fData = new FieldData();
+            fData.FieldName = fieldName;
+            int fieldIndex = fields.FindField(fieldName);
+            while (row != null)
+            {
+                object value = row.get_Value(fieldIndex);
+                fData.Values.Add(value);
+                row = cursor.NextRow();
+            }
+            return fData;
+        }
+
         private void labelClrPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
 
@@ -370,10 +395,10 @@ namespace GIS
 
         private void setDistrictColor(string districtName)
         {
-            if (m_map.Map.LayerCount <= 5)
+            if (m_map.Map.LayerCount < 5)
                 return;
             IFeatureLayer pFeatureLayer = m_map.Map.get_Layer(4) as IFeatureLayer;
-            if (pFeatureLayer == null) 
+            if (pFeatureLayer == null)
                 return;
             IQueryFilter pFilter;
             pFilter = new QueryFilterClass();
@@ -387,9 +412,9 @@ namespace GIS
             pColor.Red = 220;
             pColor.Green = 112;
             pColor.Blue = 60;
-            ISelectionSet selectSet =  pFeatureSelection.SelectionSet;
-            
-           // pFeatureSelection.SelectionColor = getRGB(220, 60, 60);//pColor
+            ISelectionSet selectSet = pFeatureSelection.SelectionSet;
+
+            // pFeatureSelection.SelectionColor = getRGB(220, 60, 60);//pColor
             //m_map.ClearLayers();
             m_map.Refresh();
 
@@ -415,7 +440,7 @@ namespace GIS
                 pFeat = pFeatCursor.NextFeature();
             }
             setPointColor(listCode[this.districtList.SelectedIndex].ToString());
-           // */
+            // */
 
         }
 
@@ -428,9 +453,9 @@ namespace GIS
             pFeatureLayer = m_map.Map.get_Layer(0) as IFeatureLayer;
             IFeatureLayer pCurrentLayer = pFeatureLayer;
 
-            IQueryFilter pQueryFilter; 
+            IQueryFilter pQueryFilter;
             pQueryFilter = new QueryFilterClass();
-            pQueryFilter.WhereClause = "ADMINCODE = "+str;
+            pQueryFilter.WhereClause = "ADMINCODE = " + str;
             //查询
             IFeatureCursor pCursor;
             pCursor = pFeatureLayer.Search(pQueryFilter, true);
@@ -444,17 +469,17 @@ namespace GIS
             IFeature pFeat;
             pFeat = pCursor.NextFeature();
             while (pFeat != null)
-            {        
+            {
                 pMap.SelectFeature(pCurrentLayer, pFeat);
                 pFeat = pCursor.NextFeature();
             }
 
-           
-           // pFeatureLayer.Visible false;
-          
-           IActiveView pActiveView = pMap as IActiveView;
-           pActiveView.PartialRefresh(esriViewDrawPhase.esriViewGeoSelection, null, null);
-             
+
+            // pFeatureLayer.Visible false;
+
+            IActiveView pActiveView = pMap as IActiveView;
+            pActiveView.PartialRefresh(esriViewDrawPhase.esriViewGeoSelection, null, null);
+
         }
 
         private IRgbColor getRGB(int r, int g, int b)
@@ -509,6 +534,47 @@ namespace GIS
         private void MainWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //MessageBox.Show("Closing");
+        }
+
+        private List<KeyValuePair<string, long>> getDistrictPOI()
+        {
+            if (this.m_map.Map.LayerCount < 5)
+                return new List<KeyValuePair<string, long>>();
+            ILayer layer_POI = this.m_map.Map.get_Layer(0);
+            ILayer layer_district = this.m_map.Map.get_Layer(4);
+            FieldData POIAdmincode = getData(layer_POI, "ADMINCODE");
+            FieldData districtName = getData(layer_district, "Name");
+            FieldData districtCode = getData(layer_district, "Code");
+
+            Dictionary<string, string> distriction = new Dictionary<string, string>();
+            for (int i = 0; i < districtName.Count; i++)
+            {
+                string _name = districtName.Values[i].ToString();
+                string _code = districtCode.Values[i].ToString();
+                distriction.Add(_code, _name);
+            }
+
+            Dictionary<string, long> districtPOICount = new Dictionary<string, long>();
+            foreach (object o in POIAdmincode.Values)
+            {
+                string _code = o.ToString();
+                if (!districtPOICount.ContainsKey(_code))
+                {
+                    districtPOICount.Add(_code, 1);
+                }
+                else
+                {
+                    districtPOICount[_code]++;
+                }
+            }
+
+            List<KeyValuePair<string, long>> list = new List<KeyValuePair<string, long>>();
+            for (int i = 0; i < districtCode.Count; i++)
+            {
+                string _code = districtCode.Values[i].ToString();
+                list.Add(new KeyValuePair<string, long>(distriction[_code], districtPOICount[_code]));
+            }
+            return list;
         }
     }
 }
