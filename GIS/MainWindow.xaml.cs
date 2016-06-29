@@ -84,7 +84,7 @@ namespace GIS
                 this.cbxActiveMap.Items.Add(mapDoc.get_Map(i).Name);
             }
             this.cbxActiveMap.SelectedIndex = 0;
-
+            m_toolbar.AddItem("esriControls.ControlsMapNavigationToolbar");
             //添加行政区划分
             this.districtList.Items.Clear();
             this.districtList.Items.Add("杨浦区");
@@ -125,10 +125,6 @@ namespace GIS
             listCode.Add("310230");
             // this.districtList.SelectedIndex = 0;
 
-            m_map.Map = mapDoc.get_Map(0);
-            m_toc.SetBuddyControl(m_map);
-            m_toolbar.SetBuddyControl(m_map);
-            m_toolbar.AddItem("esriControls.ControlsMapNavigationToolbar");
         }
 
 
@@ -196,7 +192,6 @@ namespace GIS
             m_map.Map = mapDoc.get_Map(this.cbxActiveMap.SelectedIndex);
             m_toc.SetBuddyControl(m_map);
             m_toolbar.SetBuddyControl(m_map);
-            m_toolbar.AddItem("esriControls.ControlsMapNavigationToolbar");
             m_map.Refresh();
 
             LoadLayers();
