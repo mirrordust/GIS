@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 
 using ESRI.ArcGIS.Controls;
 using ESRI.ArcGIS.Carto;
@@ -44,7 +45,7 @@ namespace GIS
         {
             get
             {
-                if(labelClrPicker.SelectedColor == null)
+                if (labelClrPicker.SelectedColor == null)
                 {
                     defaultLabelColor.R = 255;
                     defaultLabelColor.G = 0;
@@ -68,12 +69,12 @@ namespace GIS
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            LoadMap();
+            //LoadMap();
         }
 
-        private void LoadMap()
+        private void LoadMap(string arcMapPath)
         {
-            mapDoc.Open(Properties.Resources.ArcMapPath);
+            mapDoc.Open(arcMapPath);
 
             this.cbxActiveMap.Items.Clear();
             for (int i = 0; i < mapDoc.MapCount; i++)
@@ -120,14 +121,9 @@ namespace GIS
         {
             if (labelOn)
             {
-                labelOn = false;
-                gLabelLayer.DisplayAnnotation = false;
-            }
-            else
-            {
-                labelOn = true;
-
-                if(annoPropCol != null)
+                if (!this.cbxActiveMap.HasItems || !this.cbxFeatureLayer.HasItems || !this.cbxField.HasItems)
+                    return;
+                if (annoPropCol != null)
                 {
                     annoPropCol.Clear();
                 }
@@ -175,6 +171,8 @@ namespace GIS
 
         private void cbxActiveMap_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (this.cbxActiveMap.SelectedIndex < 0)
+                return;
             m_map.Map = mapDoc.get_Map(this.cbxActiveMap.SelectedIndex);
             m_toc.SetBuddyControl(m_map);
             m_toolbar.SetBuddyControl(m_map);
@@ -219,6 +217,8 @@ namespace GIS
 
         private void cbxFeatureLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (this.cbxFeatureLayer.SelectedIndex < 0)
+                return;
             ILayer fLayer;
             fLayer = m_map.Map.get_Layer(this.cbxFeatureLayer.SelectedIndex);
             LoadFields(fLayer);
@@ -246,12 +246,67 @@ namespace GIS
 
         private void cbxField_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (this.cbxField.SelectedIndex < 0)
+                return;
         }
 
         private void labelClrPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
 
+        }
+
+        private void chkBoxLabel_Unchecked(object sender, RoutedEventArgs e)
+        {
+            labelOn = false;
+            if (gLabelLayer != null)
+            {
+                gLabelLayer.DisplayAnnotation = false;
+            }
+            if (m_map.Map != null)
+            {
+                m_map.Refresh();
+            }
+        }
+
+        private void chkBoxLabel_Checked(object sender, RoutedEventArgs e)
+        {
+            labelOn = true;
+        }
+
+        private void Open_Click(object sender, RoutedEventArgs e)
+        {
+            CloseFile();
+            OpenFile();
+        }
+
+        private void OpenFile()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.DefaultExt = ".mxd";
+            openFileDialog.Filter = "ArcMap Documents (*.mxd)|*.mxd";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string arcMapPath = openFileDialog.FileName;
+                LoadMap(arcMapPath);
+            }
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            CloseFile();
+        }
+
+        private void CloseFile()
+        {
+            cbxActiveMap.Items.Clear();
+            cbxFeatureLayer.Items.Clear();
+            cbxField.Items.Clear();
+            chkBoxLabel.IsChecked = false;
+            labelClrPicker.SelectedColor = null;
+            m_map.ClearLayers();
+            m_toc.Update();
+            m_toolbar.Update();
+            m_map.Refresh();
         }
 
         private void districtSelect(object sender, SelectionChangedEventArgs e)
@@ -261,7 +316,6 @@ namespace GIS
             String districName = this.districtList.Items.GetItemAt(this.districtList.SelectedIndex).ToString();
             setDistrictColor(districName);
         }
-
 
         private void setDistrictColor(string districtName)
         {
