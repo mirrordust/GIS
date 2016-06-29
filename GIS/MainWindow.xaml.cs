@@ -83,6 +83,28 @@ namespace GIS
             }
             this.cbxActiveMap.SelectedIndex = 0;
 
+            //添加行政区划分
+            this.districtList.Items.Clear();
+            this.districtList.Items.Add("杨浦区");
+            this.districtList.Items.Add("嘉定区");
+            this.districtList.Items.Add("宝山区");
+            this.districtList.Items.Add("闸北区");
+            this.districtList.Items.Add("虹口区");
+            this.districtList.Items.Add("普陀区");
+            this.districtList.Items.Add("青浦区");
+            this.districtList.Items.Add("闵行区");
+            this.districtList.Items.Add("黄浦区");
+            this.districtList.Items.Add("长宁区");
+            this.districtList.Items.Add("静安区");
+            this.districtList.Items.Add("卢湾区");
+            this.districtList.Items.Add("徐汇区");
+            this.districtList.Items.Add("松江区");
+            this.districtList.Items.Add("奉贤区");
+            this.districtList.Items.Add("浦东新区");
+            this.districtList.Items.Add("金山区");
+            this.districtList.Items.Add("崇明县");
+           // this.districtList.SelectedIndex = 0;
+
             m_map.Map = mapDoc.get_Map(0);
             m_toc.SetBuddyControl(m_map);
             m_toolbar.SetBuddyControl(m_map);
@@ -286,5 +308,64 @@ namespace GIS
             m_toolbar.Update();
             m_map.Refresh();
         }
+
+        private void districtSelect(object sender, SelectionChangedEventArgs e)
+        {
+            Console.Out.WriteLine(sender.ToString());
+            Console.Out.WriteLine(this.districtList.Items.GetItemAt(this.districtList.SelectedIndex));
+            String districName = this.districtList.Items.GetItemAt(this.districtList.SelectedIndex).ToString();
+            setDistrictColor(districName);
+        }
+
+        private void setDistrictColor(string districtName)
+        {
+            IFeatureLayer pFeatureLayer = m_map.Map.get_Layer(4) as IFeatureLayer;
+            IQueryFilter pFilter;
+            pFilter = new QueryFilterClass();
+            pFilter.WhereClause = "Name = '"+districtName+"'";
+            IFeatureSelection pFeatureSelection;
+            pFeatureSelection = pFeatureLayer as IFeatureSelection;
+            pFeatureSelection.SelectFeatures(pFilter, esriSelectionResultEnum.esriSelectionResultNew, true);
+            //将选择集添上颜色
+            IRgbColor pColor;
+            pColor = new RgbColorClass();
+            pColor.Red = 220;
+            pColor.Green = 112;
+            pColor.Blue = 60;
+            pFeatureSelection.SelectionColor = pColor;
+            //m_map.ClearLayers();
+            m_map.Refresh();
+
+            ISelectionSet pFeatSet;
+            pFeatSet = pFeatureSelection.SelectionSet;
+            IFeatureCursor pFeatCursor;
+            ICursor pCursor;
+            pFeatSet.Search(null, true, out pCursor);
+            pFeatCursor = pCursor as IFeatureCursor;
+            IFeature pFeat;
+            pFeat = pFeatCursor.NextFeature();
+            while (pFeat != null)
+            {
+                if (pFeat != null)
+                {
+                    ISimpleFillSymbol pFillsyl2;
+                    pFillsyl2 = new SimpleFillSymbolClass();
+                    pFillsyl2.Color = getRGB(220, 60, 60);
+                    m_map.FlashShape(pFeat.Shape, 15, 20, pFillsyl2);
+                }
+                pFeat = pFeatCursor.NextFeature();
+            }
+        }
+
+        private IRgbColor getRGB(int r, int g, int b)
+        {
+            IRgbColor pColor;
+            pColor = new RgbColorClass();
+            pColor.Red = r;
+            pColor.Green = g;
+            pColor.Blue = b;
+            return pColor;
+        }
+
     }
 }

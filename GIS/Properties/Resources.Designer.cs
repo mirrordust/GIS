@@ -61,7 +61,7 @@ namespace GIS.Properties {
         }
         
         /// <summary>
-        ///   查找类似 E:\Git_Repositories\GIS\projectMXD\project.mxd 的本地化字符串。
+        ///   查找类似 D:\常用文件\GIS\projectMXD\project.mxd 的本地化字符串。
         /// </summary>
         internal static string ArcMapPath {
             get {
