@@ -39,6 +39,7 @@ namespace GIS
         IGeoFeatureLayer gLabelLayer;
         IAnnotateLayerPropertiesCollection annoPropCol;
         bool labelOn = false;
+        List<String> listCode = new List<string>();
 
         private Color defaultLabelColor = new Color();
         public Color LabelColor
@@ -86,23 +87,41 @@ namespace GIS
             //添加行政区划分
             this.districtList.Items.Clear();
             this.districtList.Items.Add("杨浦区");
+            listCode.Add("310110");
             this.districtList.Items.Add("嘉定区");
+            listCode.Add("310114");
             this.districtList.Items.Add("宝山区");
+            listCode.Add("310113");
             this.districtList.Items.Add("闸北区");
+            listCode.Add("310108");
             this.districtList.Items.Add("虹口区");
+            listCode.Add("310109");
             this.districtList.Items.Add("普陀区");
+            listCode.Add("310107");
             this.districtList.Items.Add("青浦区");
+            listCode.Add("310118");
             this.districtList.Items.Add("闵行区");
+            listCode.Add("310112");
             this.districtList.Items.Add("黄浦区");
+            listCode.Add("310101");
             this.districtList.Items.Add("长宁区");
+            listCode.Add("310105");
             this.districtList.Items.Add("静安区");
+            listCode.Add("310106");
             this.districtList.Items.Add("卢湾区");
+            listCode.Add("310103");
             this.districtList.Items.Add("徐汇区");
+            listCode.Add("310104");
             this.districtList.Items.Add("松江区");
+            listCode.Add("310117");
             this.districtList.Items.Add("奉贤区");
+            listCode.Add("310120");
             this.districtList.Items.Add("浦东新区");
+            listCode.Add("310115");
             this.districtList.Items.Add("金山区");
+            listCode.Add("310116");
             this.districtList.Items.Add("崇明县");
+            listCode.Add("310230");
             // this.districtList.SelectedIndex = 0;
 
             m_map.Map = mapDoc.get_Map(0);
@@ -315,14 +334,17 @@ namespace GIS
             //Console.Out.WriteLine(this.districtList.Items.GetItemAt(this.districtList.SelectedIndex));
             String districName = this.districtList.Items.GetItemAt(this.districtList.SelectedIndex).ToString();
             setDistrictColor(districName);
+            Console.Out.WriteLine(listCode[this.districtList.SelectedIndex]);
         }
 
         private void setDistrictColor(string districtName)
         {
             IFeatureLayer pFeatureLayer = m_map.Map.get_Layer(4) as IFeatureLayer;
+            if (pFeatureLayer == null) 
+                return;
             IQueryFilter pFilter;
             pFilter = new QueryFilterClass();
-            pFilter.WhereClause = "Name = '" + districtName + "'";
+            pFilter.WhereClause = "Name = '" + districtName + "'";//"Name" = '嘉定区' OR "Name" = '杨浦区'
             IFeatureSelection pFeatureSelection;
             pFeatureSelection = pFeatureLayer as IFeatureSelection;
             pFeatureSelection.SelectFeatures(pFilter, esriSelectionResultEnum.esriSelectionResultNew, true);
@@ -332,15 +354,18 @@ namespace GIS
             pColor.Red = 220;
             pColor.Green = 112;
             pColor.Blue = 60;
-            pFeatureSelection.SelectionColor = pColor;
+            ISelectionSet selectSet =  pFeatureSelection.SelectionSet;
+            
+           // pFeatureSelection.SelectionColor = getRGB(220, 60, 60);//pColor
             //m_map.ClearLayers();
             m_map.Refresh();
 
+            /* 删除闪烁效果*/
             ISelectionSet pFeatSet;
             pFeatSet = pFeatureSelection.SelectionSet;
             IFeatureCursor pFeatCursor;
             ICursor pCursor;
-            pFeatSet.Search(null, true, out pCursor);
+            pFeatSet.Search(pFilter, true, out pCursor);
             pFeatCursor = pCursor as IFeatureCursor;
             IFeature pFeat;
             pFeat = pFeatCursor.NextFeature();
@@ -348,13 +373,44 @@ namespace GIS
             {
                 if (pFeat != null)
                 {
+                    Console.Out.WriteLine(pFeat.Fields);
                     ISimpleFillSymbol pFillsyl2;
                     pFillsyl2 = new SimpleFillSymbolClass();
                     pFillsyl2.Color = getRGB(220, 60, 60);
-                    m_map.FlashShape(pFeat.Shape, 15, 20, pFillsyl2);
+                    m_map.FlashShape(pFeat.Shape, 0, 0, pFillsyl2);
                 }
                 pFeat = pFeatCursor.NextFeature();
             }
+            setPointColor(listCode[this.districtList.SelectedIndex].ToString());
+           // */
+
+        }
+
+
+        private void setPointColor(String str)
+        {
+            IMap pMap = m_map.Map;
+
+            IFeatureLayer pFeatureLayer;
+            pFeatureLayer = m_map.Map.get_Layer(0) as IFeatureLayer;
+            IFeatureLayer pCurrentLayer = pFeatureLayer;
+            IQueryFilter pQueryFilter; 
+            pQueryFilter = new QueryFilterClass();
+            pQueryFilter.WhereClause = "ADMINCODE = "+str;
+            //查询
+            IFeatureCursor pCursor;
+            pCursor = pFeatureLayer.Search(pQueryFilter, true);
+         
+            IFeature pFeat;
+            pFeat = pCursor.NextFeature();
+            while (pFeat != null)
+            {        
+                pMap.SelectFeature(pCurrentLayer, pFeat);
+                pFeat = pCursor.NextFeature();
+            }
+           // IActiveView pActiveView = pMap as IActiveView;
+           // pActiveView.PartialRefresh(esriViewDrawPhase.esriViewGeoSelection, null, null);
+             
         }
 
         private IRgbColor getRGB(int r, int g, int b)
