@@ -49,7 +49,7 @@
               Background="Black"
               ShowsPreview="true"
               Width="2"/>
-            <WindowsFormsHost x:Name="toolbarHost" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Width="373"/>
+            <WindowsFormsHost x:Name="toolbarHost" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Width="Auto"/>
         </Grid>
         
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
