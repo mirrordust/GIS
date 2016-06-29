@@ -6,7 +6,8 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:GIS"
         mc:Ignorable="d"
-        Title="MainWindow"  Loaded="Window_Loaded" Closing="MainWindowClosing" Height="544.304" Width="851.898">
+        Title="MainWindow"  Loaded="Window_Loaded" Closing="MainWindowClosing"
+        d:DesignHeight="721" d:DesignWidth="1364">
     <Window.Resources>
         <RoutedCommand x:Key="OpenFile"  />
         <RoutedCommand x:Key="CloseFile" />
@@ -23,12 +24,16 @@
         <CommandBinding Command="{StaticResource ExitProgram}" Executed="CommandBindingExitProgramExecuted"/>
     </Window.CommandBindings>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="915*"/>
+            <ColumnDefinition Width="631*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Name="topRow" Height="25"/>
 
             <RowDefinition Name="contextRow"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
@@ -51,13 +56,13 @@
             <WindowsFormsHost x:Name="toolbarHost" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Width="Auto"/>
         </Grid>
 
-        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Name="tocHostCol" Width="183"/>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Name="mapControlHostCol"/>
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="230"/>
+                <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
             <WindowsFormsHost x:Name="tocHost" Grid.Column="0"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
             <!--<GridSplitter Grid.Row="1" Style="{StaticResource GridSplitterHorizontalStyle}" />-->
@@ -79,23 +84,23 @@
                         <RowDefinition Height="59*"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Label x:Name="labelActiveMap" Content="Active Map" HorizontalAlignment="Left" Margin="4,10,0,0" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="cbxActiveMap" HorizontalAlignment="Left" Margin="100,14,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxActiveMap_SelectionChanged"/>
-                    <Label x:Name="labelFLayer" Content="Feature Layers" HorizontalAlignment="Left" Margin="4,55,0,0" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="cbxFeatureLayer" HorizontalAlignment="Left" Margin="100,59,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxFeatureLayer_SelectionChanged"/>
-                    <Label x:Name="labelField" Content="Fields" HorizontalAlignment="Left" Margin="4,116,0,0" VerticalAlignment="Top"/>
-                    <ComboBox x:Name="cbxField" HorizontalAlignment="Left" Margin="100,116,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxField_SelectionChanged"/>
+                    <Label x:Name="labelActiveMap" Content="Active Map" HorizontalAlignment="Left" Margin="2,10,0,0" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="cbxActiveMap" HorizontalAlignment="Left" Margin="93,14,0,0" VerticalAlignment="Top" Width="85" SelectionChanged="cbxActiveMap_SelectionChanged"/>
+                    <Label x:Name="labelFLayer" Content="Feature Layer" HorizontalAlignment="Left" Margin="2,55,0,0" VerticalAlignment="Top" Width="87"/>
+                    <ComboBox x:Name="cbxFeatureLayer" HorizontalAlignment="Left" Margin="94,59,0,0" VerticalAlignment="Top" Width="84" SelectionChanged="cbxFeatureLayer_SelectionChanged"/>
+                    <Label x:Name="labelField" Content="Fields" HorizontalAlignment="Left" Margin="2,116,0,0" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="cbxField" HorizontalAlignment="Left" Margin="93,116,0,0" VerticalAlignment="Top" Width="85" SelectionChanged="cbxField_SelectionChanged"/>
 
-                    <xctk:ColorPicker x:Name="labelClrPicker" Margin="6,175,0,0" RenderTransformOrigin="0.459,-0.335" DisplayColorAndName="True" SelectedColorChanged="labelClrPicker_SelectedColorChanged" HorizontalAlignment="Left" Width="99" Height="23" VerticalAlignment="Top"/>
-                    <Button x:Name="btnLabel" Content="Label" Margin="135,194,0,0" Height="34" VerticalAlignment="Top" Click="btnLabel_Click" HorizontalAlignment="Left" Width="82"/>
-                    <CheckBox x:Name="chkBoxLabel" Content="Show Label" HorizontalAlignment="Left" Margin="135,163,0,0" VerticalAlignment="Top" Unchecked="chkBoxLabel_Unchecked" Checked="chkBoxLabel_Checked"/>
+                    <xctk:ColorPicker x:Name="labelClrPicker" Margin="4,175,0,0" RenderTransformOrigin="0.459,-0.335" DisplayColorAndName="True" SelectedColorChanged="labelClrPicker_SelectedColorChanged" HorizontalAlignment="Left" Width="73" Height="23" VerticalAlignment="Top"/>
+                    <Button x:Name="btnLabel" Content="Label" Margin="103,194,0,0" Height="22" VerticalAlignment="Top" Click="btnLabel_Click" HorizontalAlignment="Left" Width="75"/>
+                    <CheckBox x:Name="chkBoxLabel" Content="Show Label" HorizontalAlignment="Left" Margin="93,163,0,0" VerticalAlignment="Top" Unchecked="chkBoxLabel_Unchecked" Checked="chkBoxLabel_Checked" RenderTransformOrigin="0.098,0.688" Width="85"/>
 
-                    <Label Content="District" HorizontalAlignment="Left" Margin="4,241,0,0" VerticalAlignment="Top" Width="93"/>
-                    <ComboBox x:Name="districtList" HorizontalAlignment="Left" Margin="100,245,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="districtSelect"/>
-                    <Button x:Name="btnChart" Content="Show Chart" HorizontalAlignment="Left" Margin="149,285,0,0" VerticalAlignment="Top" Width="75" Click="Chart_Click"/>
-                    <Label x:Name="labelChart" Content="Label" HorizontalAlignment="Left" Margin="10,282,0,0" VerticalAlignment="Top"/>
-                    <RadioButton x:Name="rbtnBarCht" Content="BarChart" HorizontalAlignment="Left" Margin="58,274,0,0" VerticalAlignment="Top"/>
-                    <RadioButton x:Name="rbtnPieCht" Content="PieChart" HorizontalAlignment="Left" Margin="58,304,0,0" VerticalAlignment="Top"/>
+                    <Label Content="District" HorizontalAlignment="Left" Margin="2,241,0,0" VerticalAlignment="Top" Width="61"/>
+                    <ComboBox x:Name="districtList" HorizontalAlignment="Left" Margin="94,245,0,0" VerticalAlignment="Top" Width="84" SelectionChanged="districtSelect"/>
+                    <Button x:Name="btnChart" Content="Show Chart" HorizontalAlignment="Left" Margin="103,282,0,0" VerticalAlignment="Top" Width="75" Click="Chart_Click"/>
+                    <Label x:Name="labelChart" Content="Label" HorizontalAlignment="Left" Margin="2,282,0,0" VerticalAlignment="Top"/>
+                    <RadioButton x:Name="rbtnBarCht" Content="Bar" HorizontalAlignment="Left" Margin="54,274,0,0" VerticalAlignment="Top"/>
+                    <RadioButton x:Name="rbtnPieCht" Content="Pie" HorizontalAlignment="Left" Margin="54,304,0,0" VerticalAlignment="Top"/>
 
                 </Grid>
             </GroupBox>

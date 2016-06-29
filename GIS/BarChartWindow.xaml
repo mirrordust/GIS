@@ -7,7 +7,8 @@
         xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:local="clr-namespace:GIS"
         mc:Ignorable="d"
-        Title="BarChart" Height="343.365" Width="957.009">
+        d:DesignHeight="260" d:DesignWidth="380"
+        Title="BarChart">
     <Grid>
         <!--<Grid.RowDefinitions>
             <RowDefinition Name="mainArea" Height="Auto"/>

@@ -7,7 +7,8 @@
         xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:local="clr-namespace:GIS"
         mc:Ignorable="d"
-        Title="PieChart" Height="520" Width="770">
+        d:DesignHeight="260" d:DesignWidth="380"
+        Title="PieChart">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="196*"/>
