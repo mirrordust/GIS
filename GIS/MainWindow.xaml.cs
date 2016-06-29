@@ -22,6 +22,7 @@ using ESRI.ArcGIS.Geodatabase;
 using ESRI.ArcGIS.Display;
 
 using stdole;
+using System.Windows.Controls.Primitives;
 
 namespace GIS
 {
@@ -61,7 +62,7 @@ namespace GIS
 
         public MainWindow()
         {
-            InitializeComponent();
+             InitializeComponent();
             this.mapControlHost.Child = m_map;
             this.tocHost.Child = m_toc;
             this.toolbarHost.Child = m_toolbar;
@@ -355,6 +356,22 @@ namespace GIS
                 }
                 pFeat = pFeatCursor.NextFeature();
             }
+        }
+
+        private void GridSplitterDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            MakeGridSplitterToSnapToGrid();
+        }
+
+        private void MakeGridSplitterToSnapToGrid()
+        {
+            // We want the grid splitter to snap in grid of 24 units.
+            var excess = (int)tocHostCol.Width.Value % 24;
+
+            if (excess == 0)
+                return;
+
+            tocHostCol.Width = new GridLength(tocHostCol.Width.Value - excess);
         }
 
         private IRgbColor getRGB(int r, int g, int b)
