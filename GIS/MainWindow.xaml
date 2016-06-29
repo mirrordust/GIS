@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000" Loaded="Window_Loaded">
     <Grid>
-        <WindowsFormsHost x:Name="toolbarHost" HorizontalAlignment="Left" Height="50" Margin="10,10,0,0" VerticalAlignment="Top" Width="373"/>
+        <WindowsFormsHost x:Name="toolbarHost" HorizontalAlignment="Left" Height="43" Margin="291,10,0,0" VerticalAlignment="Top" Width="373"/>
         <WindowsFormsHost x:Name="tocHost" HorizontalAlignment="Left" Height="494" Margin="10,64,0,0" VerticalAlignment="Top" Width="182"/>
         <WindowsFormsHost x:Name="mapControlHost" HorizontalAlignment="Left" Height="494" Margin="197,64,0,0" VerticalAlignment="Top" Width="526"/>
         <GroupBox x:Name="groupBox" Header="Feature Layer" HorizontalAlignment="Left" Margin="728,10,0,0" VerticalAlignment="Top" Height="260" Width="254">
@@ -19,10 +19,17 @@
                 <ComboBox x:Name="cbxFeatureLayer" HorizontalAlignment="Left" Margin="104,59,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxFeatureLayer_SelectionChanged"/>
                 <Label x:Name="labelField" Content="Fields" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top"/>
                 <ComboBox x:Name="cbxField" HorizontalAlignment="Left" Margin="104,116,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxField_SelectionChanged"/>
-                <Button x:Name="btnLabel" Content="Label" HorizontalAlignment="Left" Margin="142,0,0,32" Width="82" Height="34" VerticalAlignment="Bottom" Click="btnLabel_Click"/>
-                <xctk:ColorPicker x:Name="labelClrPicker" Margin="10,174,125,46" RenderTransformOrigin="0.459,-0.335" DisplayColorAndName="True" SelectedColorChanged="labelClrPicker_SelectedColorChanged"/>
+                <xctk:ColorPicker x:Name="labelClrPicker" Margin="10,174,125,43" RenderTransformOrigin="0.459,-0.335" DisplayColorAndName="True" SelectedColorChanged="labelClrPicker_SelectedColorChanged"/>
+                <Button x:Name="btnLabel" Content="Label" HorizontalAlignment="Left" Margin="142,0,0,10" Width="82" Height="34" VerticalAlignment="Bottom" Click="btnLabel_Click"/>
+                <CheckBox x:Name="chkBoxLabel" Content="Show Label" HorizontalAlignment="Left" Margin="139,163,0,0" VerticalAlignment="Top" Unchecked="chkBoxLabel_Unchecked" Checked="chkBoxLabel_Checked"/>
             </Grid>
         </GroupBox>
+        <Menu x:Name="menu" HorizontalAlignment="Left" Height="21" Margin="10,9,0,0" VerticalAlignment="Top" Width="276">
+            <MenuItem x:Name="File" Header="File">
+                <MenuItem x:Name="Open" Header="Open" HorizontalAlignment="Left" Width="144" Click="Open_Click"/>
+                <MenuItem x:Name="Close" Header="Close" HorizontalAlignment="Left" Width="144" Click="Close_Click"/>
+            </MenuItem>
+        </Menu>
 
     </Grid>
 </Window>
