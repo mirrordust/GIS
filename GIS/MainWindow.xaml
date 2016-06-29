@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:GIS"
         mc:Ignorable="d"
         d:DesignHeight="500" d:DesignWidth="800"
-        Title="MainWindow"  Loaded="Window_Loaded">
+        Title="MainWindow"  Loaded="Window_Loaded" Closing="MainWindowClosing">
     <Window.Resources>
         <RoutedCommand x:Key="OpenFile"  />
         <RoutedCommand x:Key="CloseFile" />

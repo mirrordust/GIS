@@ -405,7 +405,7 @@ namespace GIS
 
         private void CommandBindingExitProgramExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-
+            Application.Current.MainWindow.Close();
         }
 
         private IMap getCbxSelectedMap()
@@ -430,6 +430,11 @@ namespace GIS
             IFeatureLayer fLayer = getCbxSelectedLayer() as FeatureLayer;
             IFields fields = fLayer.FeatureClass.Fields;
             return fields.get_Field(fields.FindField(fieldName));
+        }
+
+        private void MainWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //MessageBox.Show("Closing");
         }
     }
 }
