@@ -251,6 +251,31 @@ namespace GIS
                 return;
         }
 
+        private FieldData getData(ILayer layer, IField field)
+        {
+            if (layer == null || field == null)
+                return null;
+
+            IFeatureLayer fLayer = layer as IFeatureLayer;
+            IFeatureClass fClass = fLayer.FeatureClass;
+            IFields fields = fClass.Fields;
+
+            ITable table = fClass as ITable;
+            ICursor cursor = table.Search(null, false);
+            IRow row = cursor.NextRow();
+
+            FieldData fData = new FieldData();
+            fData.FieldName = field.Name;
+            int fieldIndex = fields.FindField(field.Name);
+            while (row != null)
+            {
+                object value = row.get_Value(fieldIndex);
+                fData.Values.Add(value);
+                row = cursor.NextRow();
+            }
+            return fData;
+        }
+
         private void labelClrPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e)
         {
 
@@ -358,10 +383,6 @@ namespace GIS
             }
         }
 
-       
-
-       
-
         private IRgbColor getRGB(int r, int g, int b)
         {
             IRgbColor pColor;
@@ -385,6 +406,30 @@ namespace GIS
         private void CommandBindingExitProgramExecuted(object sender, ExecutedRoutedEventArgs e)
         {
 
+        }
+
+        private IMap getCbxSelectedMap()
+        {
+            if (this.cbxActiveMap.SelectedIndex < 0)
+                return null;
+            return mapDoc.get_Map(this.cbxActiveMap.SelectedIndex);
+        }
+
+        private ILayer getCbxSelectedLayer()
+        {
+            if (this.cbxFeatureLayer.SelectedIndex < 0)
+                return null;
+            return this.m_map.Map.get_Layer(this.cbxFeatureLayer.SelectedIndex);
+        }
+
+        private IField getCbxSelectedField()
+        {
+            if (this.cbxField.SelectedIndex < 0)
+                return null;
+            string fieldName = cbxField.SelectedItem as string;
+            IFeatureLayer fLayer = getCbxSelectedLayer() as FeatureLayer;
+            IFields fields = fLayer.FeatureClass.Fields;
+            return fields.get_Field(fields.FindField(fieldName));
         }
     }
 }
