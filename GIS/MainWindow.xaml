@@ -4,8 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:DV="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
-        xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        
         xmlns:local="clr-namespace:GIS"
         mc:Ignorable="d"
         Title="MainWindow"  Loaded="Window_Loaded" Closing="MainWindowClosing" Height="544.304" Width="851.898">
@@ -99,32 +98,7 @@
                 </Grid>
             </GroupBox>
 
-            <DVC:Chart Canvas.Top="80" Canvas.Left="10" Name="mcChart"
-           Width="400" Height="250"
-           Background="LightSteelBlue" Margin="210,322,49,-84" Grid.Column="2" Grid.ColumnSpan="3">
-                <DVC:Chart.Series>
-                    <DVC:ColumnSeries Title="Experience"
-            IndependentValueBinding="{Binding Path=Key}"
-            DependentValueBinding="{Binding Path=Value}">
-                        <DVC:ColumnSeries.DataPointStyle>
-                            <Style TargetType="DVC:ColumnDataPoint">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="DVC:ColumnDataPoint">
-                                            <Grid>
-                                                <Rectangle Fill="{TemplateBinding Background}" Stroke="Black"/>
-                                                <Grid Margin="0 -20 0 0" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                                    <TextBlock Text="{TemplateBinding FormattedDependentValue}" Margin="2"/>
-                                                </Grid>
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </DVC:ColumnSeries.DataPointStyle>
-                    </DVC:ColumnSeries>
-                </DVC:Chart.Series>
-            </DVC:Chart>
+           
 
         </Grid>
 

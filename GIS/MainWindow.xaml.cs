@@ -581,7 +581,7 @@ namespace GIS
 
         private void Chart_Click(object sender, RoutedEventArgs e)
         {
-            new ChartWindow().Activate();
+            new ChartWindow().Show();
         }
     }
 }
