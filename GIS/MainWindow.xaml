@@ -6,39 +6,99 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:GIS"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="1000" Loaded="Window_Loaded">
+        d:DesignHeight="500" d:DesignWidth="800"
+        Title="MainWindow"  Loaded="Window_Loaded" Closing="MainWindowClosing">
+    <Window.Resources>
+        <RoutedCommand x:Key="OpenFile"  />
+        <RoutedCommand x:Key="CloseFile" />
+        <RoutedCommand x:Key="ExitProgram" />
+    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="O" Command="{StaticResource OpenFile}" />
+        <KeyBinding Modifiers="Ctrl" Key="W" Command="{StaticResource CloseFile}"/>
+        <KeyBinding Modifiers="Ctrl" Key="Q" Command="{StaticResource ExitProgram}"/>
+    </Window.InputBindings>
+    <Window.CommandBindings>
+        <CommandBinding Command="{StaticResource OpenFile}" Executed="CommandBindingOpenFileExecuted"/>
+        <CommandBinding Command="{StaticResource CloseFile}" Executed="CommandBindingCloseFileExecuted"/>
+        <CommandBinding Command="{StaticResource ExitProgram}" Executed="CommandBindingExitProgramExecuted"/>
+    </Window.CommandBindings>
     <Grid>
-        <WindowsFormsHost x:Name="toolbarHost" HorizontalAlignment="Left" Height="43" Margin="291,10,0,0" VerticalAlignment="Top" Width="373"/>
-        <WindowsFormsHost x:Name="tocHost" HorizontalAlignment="Left" Height="494" Margin="10,64,0,0" VerticalAlignment="Top" Width="182"/>
-        <WindowsFormsHost x:Name="mapControlHost" HorizontalAlignment="Left" Height="494" Margin="197,64,0,0" VerticalAlignment="Top" Width="526"/>
-        <GroupBox x:Name="groupBox" Header="Feature Layer" HorizontalAlignment="Left" Margin="728,10,0,0" VerticalAlignment="Top" Height="384" Width="254">
-            <Grid HorizontalAlignment="Left" Height="326" Margin="10,10,-2,0" VerticalAlignment="Top" Width="234">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="59*"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Label x:Name="labelActiveMap" Content="Active Map" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-                <ComboBox x:Name="cbxActiveMap" HorizontalAlignment="Left" Margin="104,14,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxActiveMap_SelectionChanged"/>
-                <Label x:Name="labelFLayer" Content="Feature Layers" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top"/>
-                <ComboBox x:Name="cbxFeatureLayer" HorizontalAlignment="Left" Margin="104,59,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxFeatureLayer_SelectionChanged"/>
-                <Label x:Name="labelField" Content="Fields" HorizontalAlignment="Left" Margin="10,116,0,0" VerticalAlignment="Top"/>
-                <ComboBox x:Name="cbxField" HorizontalAlignment="Left" Margin="104,116,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxField_SelectionChanged"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Name="topRow" Height="25"/>
+            
+            <RowDefinition Name="contextRow"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Menu x:Name="menu" Grid.Column="0" HorizontalAlignment="Left"  Margin="10,0,5,0" VerticalAlignment="Stretch" Width="Auto">
+                <MenuItem x:Name="File" Header="File">
+                    <MenuItem x:Name="Open" Header="Open&#x9;Ctrl+O" HorizontalAlignment="Left" Width="Auto" Command="{StaticResource OpenFile}"/>
+                    <MenuItem x:Name="Close" Header="Close&#x9;Ctrl+W" HorizontalAlignment="Left" Width="Auto" Command="{StaticResource CloseFile}"/>
+                    <MenuItem x:Name="Exit" Header="Exit&#x9;Ctrl+Q" HorizontalAlignment="Left" Width="Auto" Command="{StaticResource ExitProgram}"/>
+                </MenuItem>
+            </Menu>
+            <GridSplitter Grid.Column="1" 
+              Grid.RowSpan="1" 
+              HorizontalAlignment="Left" 
+              VerticalAlignment="Stretch"
+              Background="Black"
+              ShowsPreview="true"
+              Width="2"/>
+            <WindowsFormsHost x:Name="toolbarHost" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Width="373"/>
+        </Grid>
+        
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Name="tocHostCol" Width="183"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Name="mapControlHostCol"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="230"/>
+            </Grid.ColumnDefinitions>
+            <WindowsFormsHost x:Name="tocHost" Grid.Column="0"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
+            <!--<GridSplitter Grid.Row="1" Style="{StaticResource GridSplitterHorizontalStyle}" />-->
+            <GridSplitter Grid.Column="1" 
+              Grid.RowSpan="1" 
+              HorizontalAlignment="Left" 
+              VerticalAlignment="Stretch"
+              Background="White"
+              ShowsPreview="true"
+              Width="2"/>
+            <WindowsFormsHost x:Name="mapControlHost" Grid.Column="2" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
+            <GridSplitter Grid.Column="3"     
+              VerticalAlignment="Stretch"
+              Background="White"
+              />
+            <GroupBox x:Name="groupBox" Grid.Column="4" Header="Feature Layer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                <Grid HorizontalAlignment="Left" Height="326" Margin="0,10,-2,0" VerticalAlignment="Top" Width="234">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="59*"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Label x:Name="labelActiveMap" Content="Active Map" HorizontalAlignment="Left" Margin="4,10,0,0" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="cbxActiveMap" HorizontalAlignment="Left" Margin="100,14,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxActiveMap_SelectionChanged"/>
+                    <Label x:Name="labelFLayer" Content="Feature Layers" HorizontalAlignment="Left" Margin="4,55,0,0" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="cbxFeatureLayer" HorizontalAlignment="Left" Margin="100,59,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxFeatureLayer_SelectionChanged"/>
+                    <Label x:Name="labelField" Content="Fields" HorizontalAlignment="Left" Margin="4,116,0,0" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="cbxField" HorizontalAlignment="Left" Margin="100,116,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="cbxField_SelectionChanged"/>
 
-                <xctk:ColorPicker x:Name="labelClrPicker" Margin="6,175,129,124" RenderTransformOrigin="0.459,-0.335" DisplayColorAndName="True" SelectedColorChanged="labelClrPicker_SelectedColorChanged"/>
-                <Button x:Name="btnLabel" Content="Label" HorizontalAlignment="Left" Margin="142,0,0,89" Width="82" Height="34" VerticalAlignment="Bottom" Click="btnLabel_Click"/>
-                <CheckBox x:Name="chkBoxLabel" Content="Show Label" HorizontalAlignment="Left" Margin="139,163,0,0" VerticalAlignment="Top" Unchecked="chkBoxLabel_Unchecked" Checked="chkBoxLabel_Checked"/>
+                    <xctk:ColorPicker x:Name="labelClrPicker" Margin="6,175,129,124" RenderTransformOrigin="0.459,-0.335" DisplayColorAndName="True" SelectedColorChanged="labelClrPicker_SelectedColorChanged"/>
+                    <Button x:Name="btnLabel" Content="Label" HorizontalAlignment="Left" Margin="135,0,0,89" Width="82" Height="34" VerticalAlignment="Bottom" Click="btnLabel_Click"/>
+                    <CheckBox x:Name="chkBoxLabel" Content="Show Label" HorizontalAlignment="Left" Margin="135,163,0,0" VerticalAlignment="Top" Unchecked="chkBoxLabel_Unchecked" Checked="chkBoxLabel_Checked"/>
 
-                <Label Content="District" HorizontalAlignment="Left" Margin="6,241,0,0" VerticalAlignment="Top" Width="93"/>
-                <ComboBox x:Name="districtList" HorizontalAlignment="Left" Margin="114,245,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="districtSelect"/>
+                    <Label Content="District" HorizontalAlignment="Left" Margin="4,241,0,0" VerticalAlignment="Top" Width="93"/>
+                    <ComboBox x:Name="districtList" HorizontalAlignment="Left" Margin="100,245,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="districtSelect"/>
 
-            </Grid>
-        </GroupBox>
-        <Menu x:Name="menu" HorizontalAlignment="Left" Height="21" Margin="10,9,0,0" VerticalAlignment="Top" Width="276">
-            <MenuItem x:Name="File" Header="File">
-                <MenuItem x:Name="Open" Header="Open" HorizontalAlignment="Left" Width="144" Click="Open_Click"/>
-                <MenuItem x:Name="Close" Header="Close" HorizontalAlignment="Left" Width="144" Click="Close_Click"/>
-            </MenuItem>
-        </Menu>
+                </Grid>
+            </GroupBox>
+        </Grid>
+       
+        
 
     </Grid>
 </Window>
