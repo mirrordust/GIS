@@ -358,21 +358,9 @@ namespace GIS
             }
         }
 
-        private void GridSplitterDragCompleted(object sender, DragCompletedEventArgs e)
-        {
-            MakeGridSplitterToSnapToGrid();
-        }
+       
 
-        private void MakeGridSplitterToSnapToGrid()
-        {
-            // We want the grid splitter to snap in grid of 24 units.
-            var excess = (int)tocHostCol.Width.Value % 24;
-
-            if (excess == 0)
-                return;
-
-            tocHostCol.Width = new GridLength(tocHostCol.Width.Value - excess);
-        }
+       
 
         private IRgbColor getRGB(int r, int g, int b)
         {
@@ -384,5 +372,19 @@ namespace GIS
             return pColor;
         }
 
+        private void CommandBindingOpenFileExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Open_Click(sender, e);
+        }
+
+        private void CommandBindingCloseFileExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Close_Click(sender, e);
+        }
+
+        private void CommandBindingExitProgramExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
     }
 }
