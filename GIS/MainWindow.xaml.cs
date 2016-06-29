@@ -87,6 +87,24 @@ namespace GIS
 
             //添加行政区划分
             this.districtList.Items.Clear();
+            initData();
+           
+            // this.districtList.SelectedIndex = 0;
+
+            m_map.Map = mapDoc.get_Map(0);
+            m_toc.SetBuddyControl(m_map);
+            m_toolbar.SetBuddyControl(m_map);
+            m_toolbar.AddItem("esriControls.ControlsMapNavigationToolbar");
+        }
+
+
+        private void btnLabel_Click(object sender, RoutedEventArgs e)
+        {
+            ShowLabel();
+        }
+
+        private void initData()
+        {
             this.districtList.Items.Add("杨浦区");
             listCode.Add("310110");
             this.districtList.Items.Add("嘉定区");
@@ -123,20 +141,7 @@ namespace GIS
             listCode.Add("310116");
             this.districtList.Items.Add("崇明县");
             listCode.Add("310230");
-            // this.districtList.SelectedIndex = 0;
-
-            m_map.Map = mapDoc.get_Map(0);
-            m_toc.SetBuddyControl(m_map);
-            m_toolbar.SetBuddyControl(m_map);
-            m_toolbar.AddItem("esriControls.ControlsMapNavigationToolbar");
         }
-
-
-        private void btnLabel_Click(object sender, RoutedEventArgs e)
-        {
-            ShowLabel();
-        }
-
         private void ShowLabel()
         {
             if (labelOn)
@@ -416,17 +421,24 @@ namespace GIS
         private void setPointColor(String str)
         {
             IMap pMap = m_map.Map;
-
+            IMap oriMap = m_map.Map;
             IFeatureLayer pFeatureLayer;
             pFeatureLayer = m_map.Map.get_Layer(0) as IFeatureLayer;
             IFeatureLayer pCurrentLayer = pFeatureLayer;
+
             IQueryFilter pQueryFilter; 
             pQueryFilter = new QueryFilterClass();
             pQueryFilter.WhereClause = "ADMINCODE = "+str;
             //查询
             IFeatureCursor pCursor;
             pCursor = pFeatureLayer.Search(pQueryFilter, true);
-         
+
+
+            IFeatureSelection pFeatureSelection;
+            pFeatureSelection = pFeatureLayer as IFeatureSelection;
+            pFeatureSelection.SelectFeatures(pQueryFilter, esriSelectionResultEnum.esriSelectionResultNew, true);
+            ISelectionSet selectSet = pFeatureSelection.SelectionSet;
+
             IFeature pFeat;
             pFeat = pCursor.NextFeature();
             while (pFeat != null)
@@ -434,8 +446,12 @@ namespace GIS
                 pMap.SelectFeature(pCurrentLayer, pFeat);
                 pFeat = pCursor.NextFeature();
             }
-           // IActiveView pActiveView = pMap as IActiveView;
-           // pActiveView.PartialRefresh(esriViewDrawPhase.esriViewGeoSelection, null, null);
+
+           
+           // pFeatureLayer.Visible false;
+          
+           IActiveView pActiveView = pMap as IActiveView;
+           pActiveView.PartialRefresh(esriViewDrawPhase.esriViewGeoSelection, null, null);
              
         }
 
