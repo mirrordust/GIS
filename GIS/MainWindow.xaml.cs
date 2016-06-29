@@ -578,5 +578,10 @@ namespace GIS
             }
             return list;
         }
+
+        private void Chart_Click(object sender, RoutedEventArgs e)
+        {
+            new ChartWindow().Activate();
+        }
     }
 }

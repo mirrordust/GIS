@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:DV="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:local="clr-namespace:GIS"
         mc:Ignorable="d"
-        d:DesignHeight="500" d:DesignWidth="800"
-        Title="MainWindow"  Loaded="Window_Loaded" Closing="MainWindowClosing">
+        Title="MainWindow"  Loaded="Window_Loaded" Closing="MainWindowClosing" Height="544.304" Width="851.898">
     <Window.Resources>
         <RoutedCommand x:Key="OpenFile"  />
         <RoutedCommand x:Key="CloseFile" />
@@ -26,7 +27,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Name="topRow" Height="25"/>
-            
+
             <RowDefinition Name="contextRow"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
@@ -51,7 +52,7 @@
               Width="2"/>
             <WindowsFormsHost x:Name="toolbarHost" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Top" Width="Auto"/>
         </Grid>
-        
+
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Name="tocHostCol" Width="183"/>
@@ -75,7 +76,7 @@
               Background="White"
               />
             <GroupBox x:Name="groupBox" Grid.Column="4" Header="Feature Layer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                <Grid HorizontalAlignment="Left" Height="326" Margin="0,10,-2,0" VerticalAlignment="Top" Width="234">
+                <Grid HorizontalAlignment="Left" Height="327" Margin="0,10,-16,0" VerticalAlignment="Top" Width="234">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="59*"/>
                         <RowDefinition/>
@@ -93,12 +94,41 @@
 
                     <Label Content="District" HorizontalAlignment="Left" Margin="4,241,0,0" VerticalAlignment="Top" Width="93"/>
                     <ComboBox x:Name="districtList" HorizontalAlignment="Left" Margin="100,245,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="districtSelect"/>
+                    <Button x:Name="Chart" Content="Chart" HorizontalAlignment="Left" Margin="135,282,0,0" VerticalAlignment="Top" Width="75" Click="Chart_Click"/>
 
                 </Grid>
             </GroupBox>
+
+            <DVC:Chart Canvas.Top="80" Canvas.Left="10" Name="mcChart"
+           Width="400" Height="250"
+           Background="LightSteelBlue" Margin="210,322,49,-84" Grid.Column="2" Grid.ColumnSpan="3">
+                <DVC:Chart.Series>
+                    <DVC:ColumnSeries Title="Experience"
+            IndependentValueBinding="{Binding Path=Key}"
+            DependentValueBinding="{Binding Path=Value}">
+                        <DVC:ColumnSeries.DataPointStyle>
+                            <Style TargetType="DVC:ColumnDataPoint">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="DVC:ColumnDataPoint">
+                                            <Grid>
+                                                <Rectangle Fill="{TemplateBinding Background}" Stroke="Black"/>
+                                                <Grid Margin="0 -20 0 0" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                                    <TextBlock Text="{TemplateBinding FormattedDependentValue}" Margin="2"/>
+                                                </Grid>
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DVC:ColumnSeries.DataPointStyle>
+                    </DVC:ColumnSeries>
+                </DVC:Chart.Series>
+            </DVC:Chart>
+
         </Grid>
-       
-        
+
+
 
     </Grid>
 </Window>
