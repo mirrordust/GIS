@@ -370,6 +370,8 @@ namespace GIS
 
         private void setDistrictColor(string districtName)
         {
+            if (m_map.Map.LayerCount <= 5)
+                return;
             IFeatureLayer pFeatureLayer = m_map.Map.get_Layer(4) as IFeatureLayer;
             if (pFeatureLayer == null) 
                 return;
